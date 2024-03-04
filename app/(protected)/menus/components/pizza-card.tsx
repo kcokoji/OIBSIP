@@ -73,7 +73,7 @@ export default function PizzaCard(pizza: PizzaProps) {
       veggies: undefined,
     },
   });
-  const public_key = process.env.NEXT_PUBLIC_TEST_KEY;
+  const public_key = process.env.NEXT_PUBLIC_TEST_KEY as string;
 
   const config: FlutterWaveProps = {
     public_key,

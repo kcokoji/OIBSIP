@@ -6,7 +6,7 @@ import { columns } from "./components/columns";
 import Container from "@/components/container";
 
 export default async function CustomerPage() {
-  const customers = await getCustomers();
+  const customers = (await getCustomers()) || [];
 
   return (
     <div>

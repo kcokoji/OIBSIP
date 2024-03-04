@@ -15,7 +15,7 @@ import Image from "next/image";
 import { UserButton, UserProps } from "@/components/user-button";
 
 interface Props {
-  user: UserProps;
+  user: any;
   count: number | null;
 }
 

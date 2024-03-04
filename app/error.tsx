@@ -22,7 +22,7 @@ export default function Error({
     <div className="max-h-screen flex flex-col bg-[#f2eddc]">
       <Navbar />
       <div className="py-8 space-y-4 h-screen flex items-center flex-col">
-        <Header name="505" />
+        <Header title="505" />
         <p className="text-xl text-gray-400">Something went wrong</p>
         <Button
           size="lg"

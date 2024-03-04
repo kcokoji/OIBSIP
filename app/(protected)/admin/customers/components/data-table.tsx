@@ -5,6 +5,9 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 import {
+  ColumnFiltersState,
+  SortingState,
+  ColumnDef,
   flexRender,
   getSortedRowModel,
   getCoreRowModel,
@@ -25,9 +28,19 @@ import { RefreshCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export function DataTable({ columns, data, searchKey }) {
-  const [columnFilters, setColumnFilters] = useState([]);
-  const [sorting, setSorting] = useState([]);
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  searchKey: string;
+}
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  searchKey,
+}: DataTableProps<TData, TValue>) {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const router = useRouter();
 
   const table = useReactTable({
@@ -50,7 +63,7 @@ export function DataTable({ columns, data, searchKey }) {
       <div className="flex items-center py-4 justify-end gap-2">
         <Input
           placeholder="Search "
-          value={table.getColumn(searchKey)?.getFilterValue() ?? ""}
+          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }

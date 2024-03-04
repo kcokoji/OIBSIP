@@ -9,7 +9,7 @@ export default function NotFound() {
     <div className="max-h-screen flex flex-col bg-[#f2eddc]">
       <Navbar />
       <div className="py-8 space-y-4  flex items-center justify-center flex-col h-screen">
-        <Header name="404" />
+        <Header title="404" />
         <p className="text-xl text-gray-400">
           Could not find requested resource
         </p>

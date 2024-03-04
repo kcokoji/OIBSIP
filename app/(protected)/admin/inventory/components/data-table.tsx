@@ -159,6 +159,7 @@ export default function DataTable({ data }: DataTableProps) {
           </TableHeader>
           <TableBody>
             {rows.map((row, index) => (
+              //@ts-ignore
               <DataRow key={index} {...row} />
             ))}
           </TableBody>
