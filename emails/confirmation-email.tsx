@@ -18,6 +18,8 @@ interface ConfirmationEmailProps {
 }
 
 export default function PaymentRequestEmail({ token }: ConfirmationEmailProps) {
+  const domain = process.env.NEXT_PUBLIC_APP_URL;
+  const confirmLink = `${domain}/new-verification?token=${token}`;
   return (
     <Html>
       <Head />
@@ -33,7 +35,7 @@ export default function PaymentRequestEmail({ token }: ConfirmationEmailProps) {
                 link to verify that its you.
               </Text>
               <Section style={verificationSection}>
-                <Button href={token} style={button}>
+                <Button href={confirmLink} style={button}>
                   Confirm
                 </Button>
                 <Text style={validityText}>
