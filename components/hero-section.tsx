@@ -56,14 +56,14 @@ export default function HeroSection() {
           />
         </motion.div>
 
-        <Image
+        {/* <Image
           src="/img/leaf.png"
           width={500}
           height={500}
           className="w-fit h-fit bg-red absolute top-2 left-1    rotate-180"
           alt="leaf"
           priority
-        />
+        /> */}
         {/* <div className="lg:block hidden">
           <Image
             src="/img/leaf.png"
@@ -74,7 +74,7 @@ export default function HeroSection() {
             priority
           />
         </div> */}
-        <div className="">
+        {/* <div className="">
           <Image
             src="/img/leaf.png"
             width={500}
@@ -83,7 +83,7 @@ export default function HeroSection() {
             alt="leaf"
             priority
           />
-        </div>
+        </div> */}
       </div>
     </Container>
   );
