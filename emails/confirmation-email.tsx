@@ -14,16 +14,10 @@ import {
 import * as React from "react";
 
 interface ConfirmationEmailProps {
-  userEmail: string;
-  paymentLink: string;
-  senderEmail: string;
+  token: string;
 }
 
-export default function PaymentRequestEmail({
-  userEmail,
-  paymentLink,
-  senderEmail,
-}: ConfirmationEmailProps) {
+export default function PaymentRequestEmail({ token }: ConfirmationEmailProps) {
   return (
     <Html>
       <Head />
@@ -35,12 +29,12 @@ export default function PaymentRequestEmail({
               <Heading style={h1}>Payment Request</Heading>
               <Text style={mainText}>
                 Thanks for creating an account with Pizzeria. Before you can get
-                started, we'll need to verify your email. Please click on link
-                to verify that its you.
+                started, we&apos;ll need to verify your email. Please click on
+                link to verify that its you.
               </Text>
               <Section style={verificationSection}>
-                <Button href={paymentLink} style={button}>
-                  Make Payment
+                <Button href={token} style={button}>
+                  Confirm
                 </Button>
                 <Text style={validityText}>
                   (This link is valid for 1 hour)

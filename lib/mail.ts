@@ -8,8 +8,9 @@ const email = process.env.EMAIL;
 const pass = process.env.EMAIL_PASS;
 
 const transporter = nodemailer.createTransport({
-  host: "lon108.truehost.cloud",
-  port: 587,
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
   auth: {
     user: email,
     pass,
