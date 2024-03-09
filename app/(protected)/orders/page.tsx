@@ -23,10 +23,10 @@ export default async function OrderPage() {
   const formattedOrders = formatOrderData(userOrders);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className=" min-h-screen">
       <Navbar />
 
-      <div className="bg-[#f2eddc] py-8  h-screen">
+      <div className="bg-[#f2eddc] py-8">
         <Header title="Orders" />
         <Container>
           <DataTable columns={columns} data={formattedOrders} />

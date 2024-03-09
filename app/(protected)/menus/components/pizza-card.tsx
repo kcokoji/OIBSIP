@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -56,6 +56,8 @@ interface PizzaProps {
 }
 
 export default function PizzaCard(pizza: PizzaProps) {
+  const [open, setOpen] = useState(false);
+
   const formattedPrice = convertPrice(pizza.basePrice);
 
   const [isPending, startTransition] = useTransition();
@@ -87,6 +89,7 @@ export default function PizzaCard(pizza: PizzaProps) {
       //@ts-ignore
       name: name,
     },
+
     customizations: {
       title: "Pizzeria",
       description: `Payment for ${pizza.name}`,
@@ -97,6 +100,7 @@ export default function PizzaCard(pizza: PizzaProps) {
   const handleFlutterPayment = useFlutterwave(config);
 
   const onSubmit = (values: z.infer<typeof OrderSchema>) => {
+    setOpen(false);
     handleFlutterPayment({
       callback: (response) => {
         const reference = response.tx_ref;
@@ -111,18 +115,18 @@ export default function PizzaCard(pizza: PizzaProps) {
               toast.error(data?.error);
             }
             closePaymentModal();
-            toast.success("Order Created!");
           });
         });
       },
       onClose: () => {
+        form.reset();
         toast.error("Transaction Canceled");
       },
     });
   };
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild className=" cursor-pointer">
         <Card className="w-[350px] bg-inherit border-none shadow-none group">
           <CardHeader className="flex justify-center items-center">
@@ -456,12 +460,10 @@ export default function PizzaCard(pizza: PizzaProps) {
                 />
               </div>
             </div>
-            <DrawerFooter className="flex justify-center w-full  items-center absolute bottom-0  lg:w-fit lg:right-10">
-              <DrawerClose asChild>
-                <Button type="submit" size="lg" className="shadow-xl w-full">
-                  <span>Place an order</span>
-                </Button>
-              </DrawerClose>
+            <DrawerFooter className="flex justify-center w-full items-center absolute bottom-0  lg:w-fit lg:right-10">
+              <Button type="submit" size="lg" className="shadow-xl w-full">
+                <span>Place an order</span>
+              </Button>
             </DrawerFooter>
           </form>
         </Form>

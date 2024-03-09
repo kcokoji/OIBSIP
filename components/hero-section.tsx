@@ -38,23 +38,23 @@ export default function HeroSection() {
         {/* 
         <Button size="lg">Order Now</Button> */}
 
-        <motion.div
+        {/* <motion.div
         // animate={{ rotate: 180 }}
         // transition={{
         //   duration: 10,
         //   ease: "linear",
         //   repeat: Infinity,
         // }}
-        >
-          <Image
-            src="/img/pizza.png"
-            width={400}
-            height={400}
-            className="w-fit h-fit rounded-full shadow-[0px_0px_20px_6px_#00000024] shadow-primary"
-            alt="hero-image"
-            priority
-          />
-        </motion.div>
+        > */}
+        <Image
+          src="/img/pizza.png"
+          width={400}
+          height={400}
+          className="w-fit h-fit rounded-full shadow-[0px_0px_20px_6px_#00000024] shadow-primary"
+          alt="hero-image"
+          priority
+        />
+        {/* </motion.div> */}
 
         {/* <Image
           src="/img/leaf.png"

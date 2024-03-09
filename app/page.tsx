@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 
 export default function Home() {
   return (
-    <main className="max-h-screen flex flex-col bg-[#f2eddc]">
+    <main className="min-h-screen flex flex-col bg-[#f2eddc]">
       <Navbar />
       <HeroSection />
       <Footer />
