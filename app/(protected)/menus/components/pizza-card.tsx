@@ -155,7 +155,7 @@ export default function PizzaCard(pizza: PizzaProps) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-1 lg:grid-cols-3 place-items-center p-6 gap-4 lg:gap-10 max-h-[85vh] overflow-auto"
+            className="grid grid-cols-1 lg:grid-cols-2 place-items-center p-6 gap-4 lg:gap-10 max-h-[90vh] overflow-auto"
           >
             <DrawerClose asChild className="absolute top-8 left-4">
               <Button
@@ -460,7 +460,7 @@ export default function PizzaCard(pizza: PizzaProps) {
                 />
               </div>
             </div>
-            <DrawerFooter className="flex justify-center w-full items-center absolute bottom-0  lg:w-fit lg:right-10">
+            <DrawerFooter className="flex justify-center w-full items-center absolute bottom-0 ">
               <Button type="submit" size="lg" className="shadow-xl w-full">
                 <span>Place an order</span>
               </Button>

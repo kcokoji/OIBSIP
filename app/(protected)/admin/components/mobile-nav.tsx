@@ -31,7 +31,7 @@ interface Props {
 export function MobileNav({ count }: Props) {
   const pathname = usePathname();
   return (
-    <nav className="h-10 w-full border-b bg-white lg:hidden">
+    <nav className="h-13 w-full border-b bg-white lg:hidden">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -44,59 +44,63 @@ export function MobileNav({ count }: Props) {
                   <HomeIcon className="h-4 w-4" />
                   Home
                 </div>
-                <Link
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg hover:bg-gray-100 px-3 py-2   transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
-                    pathname === "/admin" ? "bg-gray-100 text-primary" : ""
-                  )}
-                  href="/admin"
-                >
-                  <ShoppingCartIcon className="h-4 w-4" />
-                  Orders
-                  {count! > 0 && (
-                    <Badge
-                      variant="secondary"
-                      className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-                    >
-                      {count}
-                    </Badge>
-                  )}
+                <Link legacyBehavior passHref href="/admin">
+                  <NavigationMenuLink
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg hover:bg-gray-100 px-3 py-2   transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
+                      pathname === "/admin" ? "bg-gray-100 text-primary" : ""
+                    )}
+                  >
+                    <ShoppingCartIcon className="h-4 w-4" />
+                    Orders
+                    {count! > 0 && (
+                      <Badge
+                        variant="secondary"
+                        className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+                      >
+                        {count}
+                      </Badge>
+                    )}
+                  </NavigationMenuLink>
                 </Link>
-                <Link
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg hover:bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-primary dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
-                    pathname === "/admin/inventory"
-                      ? "bg-gray-100 text-primary"
-                      : ""
-                  )}
-                  href="/admin/inventory"
-                >
-                  <PackageIcon className="h-4 w-4" />
-                  Inventory
+                <Link legacyBehavior passHref href="/admin/inventory">
+                  <NavigationMenuLink
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg hover:bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-primary dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
+                      pathname === "/admin/inventory"
+                        ? "bg-gray-100 text-primary"
+                        : ""
+                    )}
+                  >
+                    <PackageIcon className="h-4 w-4" />
+                    Inventory
+                  </NavigationMenuLink>
                 </Link>
-                <Link
-                  className={cn(
-                    "flex items-center hover:bg-gray-100  gap-3 rounded-lg  px-3 py-2 text-gray-900  transition-all hover:text-primary dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
-                    pathname === "/admin/customers"
-                      ? "bg-gray-100 text-primary"
-                      : ""
-                  )}
-                  href="/admin/customers"
-                >
-                  <UsersIcon className="h-4 w-4" />
-                  Customers
+                <Link legacyBehavior passHref href="/admin/customers">
+                  <NavigationMenuLink
+                    className={cn(
+                      "flex items-center hover:bg-gray-100  gap-3 rounded-lg  px-3 py-2 text-gray-900  transition-all hover:text-primary dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
+                      pathname === "/admin/customers"
+                        ? "bg-gray-100 text-primary"
+                        : ""
+                    )}
+                  >
+                    <UsersIcon className="h-4 w-4" />
+                    Customers
+                  </NavigationMenuLink>
                 </Link>
-                <Link
-                  className={cn(
-                    "flex items-center gap-3 hover:bg-gray-100 rounded-lg  px-3 py-2 text-gray-900  transition-all hover:text-primary dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
-                    pathname === "/admin/analytics"
-                      ? "bg-gray-100 text-primary"
-                      : ""
-                  )}
-                  href="/admin/analytics"
-                >
-                  <LineChartIcon className="h-4 w-4" />
-                  Analytics
+                <Link legacyBehavior passHref href="/admin/analytics">
+                  <NavigationMenuLink
+                    className={cn(
+                      "flex items-center gap-3 hover:bg-gray-100 rounded-lg  px-3 py-2 text-gray-900  transition-all hover:text-primary dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50",
+                      pathname === "/admin/analytics"
+                        ? "bg-gray-100 text-primary"
+                        : ""
+                    )}
+                  >
+                    <LineChartIcon className="h-4 w-4" />
+                    Analytics
+                  </NavigationMenuLink>
                 </Link>
               </nav>
             </NavigationMenuContent>

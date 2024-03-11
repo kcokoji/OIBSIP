@@ -79,7 +79,12 @@ export default function CellActions({ data }: { data: Order }) {
             <div className="flex justify-between">
               <DialogTitle className="text-xl">Order Receipt</DialogTitle>
 
-              <Button onClick={() => window.print()} variant="secondary">
+              <Button
+                size="sm"
+                className="mr-2"
+                onClick={() => window.print()}
+                variant="secondary"
+              >
                 Print
               </Button>
             </div>
