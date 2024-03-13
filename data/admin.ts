@@ -132,7 +132,7 @@ const calculateOrderPrice = (order: Order) => {
 
 export const getTotalRevenue = async () => {
   try {
-    const orders = await db.order.findMany({});
+    const orders = await db.order.findMany();
 
     const totalRevenue = orders.reduce(
       (acc, order) => acc + calculateOrderPrice(order),
