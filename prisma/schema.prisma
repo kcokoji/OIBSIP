@@ -62,7 +62,6 @@ model Order {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   userId    String      @db.ObjectId
   pizzaId   Int
-  price     Int
   base      String
   sauce     String
   veggies   String?
