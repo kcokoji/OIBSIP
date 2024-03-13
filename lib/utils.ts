@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Order } from "@prisma/client";
+import { Inventory, Order } from "@prisma/client";
 import { PizzaInfo } from "@/data/pizza-info";
 
 interface AdminOrder {
@@ -32,7 +32,7 @@ export const convertPrice = (price: number | undefined): string => {
   return formattedPrice !== null ? formattedPrice : "N/A";
 };
 
-export function formatOrderData(orders: Order[]) {
+export function formatOrderData(orders: Order[] | null) {
   if (!orders || orders.length === 0) return [];
 
   return orders.map((order) => {

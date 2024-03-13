@@ -8,7 +8,6 @@ import { currentUser } from "@/lib/auth";
 import Header from "@/components/header";
 
 export default async function Component() {
-  const user = await currentUser();
   const orders = await getOrders();
   //@ts-ignore
 
@@ -16,16 +15,10 @@ export default async function Component() {
 
   return (
     <div>
-      <div className="flex flex-col">
-        <Header title="Recent Orders" />
+      <Header title="Recent Orders" />
 
-        <div className="px-6">
-          <DataTable
-            columns={columns}
-            data={formattedOrders}
-            searchKey="name"
-          />
-        </div>
+      <div className="px-6">
+        <DataTable columns={columns} data={formattedOrders} searchKey="name" />
       </div>
     </div>
   );

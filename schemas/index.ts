@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { OrderStatus, UserRole } from "@prisma/client";
+import { IngredientCategory, OrderStatus, UserRole } from "@prisma/client";
 
 export const LoginSchema = z.object({
   email: z.string().email({
@@ -125,9 +125,44 @@ export const OrderSchema = z.object({
 });
 
 export const InventorySchema = z.object({
-  base: z.optional(z.string()),
-  sauce: z.optional(z.string()),
-  cheese: z.optional(z.string()),
-  veggies: z.optional(z.string()),
-  meat: z.optional(z.string()),
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  price: z.string().min(1, {
+    message: "Price is required",
+  }),
+  stock: z.string().min(1, {
+    message: "Stock is required",
+  }),
+  category: z.enum([
+    IngredientCategory.BASE,
+    IngredientCategory.CHEESE,
+    IngredientCategory.MEAT,
+    IngredientCategory.VEGGIES,
+    IngredientCategory.SAUCE,
+  ]),
+});
+export const UpdateInventorySchema = z.object({
+  name: z.optional(
+    z.string().min(1, {
+      message: "Name is  required",
+    })
+  ),
+  price: z.optional(
+    z.string().min(1, {
+      message: "Price is required",
+    })
+  ),
+  stock: z.optional(
+    z.string().min(1, {
+      message: "Stock Quantity required",
+    })
+  ),
+  category: z.enum([
+    IngredientCategory.BASE,
+    IngredientCategory.CHEESE,
+    IngredientCategory.MEAT,
+    IngredientCategory.VEGGIES,
+    IngredientCategory.SAUCE,
+  ]),
 });

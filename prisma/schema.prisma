@@ -15,6 +15,14 @@ enum UserRole {
   USER
 }
 
+enum IngredientCategory {
+  BASE
+  SAUCE
+  MEAT
+  VEGGIES
+  CHEESE
+}
+
 enum OrderStatus {
   PROCESSING
   SHIPPED
@@ -54,6 +62,7 @@ model Order {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   userId    String      @db.ObjectId
   pizzaId   Int
+  price     Int
   base      String
   sauce     String
   veggies   String?
@@ -67,12 +76,13 @@ model Order {
 }
 
 model Inventory {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  base    Int?   @default(0)
-  sauce   Int?   @default(0)
-  cheese  Int?   @default(0)
-  veggies Int?   @default(0)
-  meat    Int?   @default(0)
+  id        String             @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  category  IngredientCategory
+  price     Float
+  stock     Int
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
 }
 
 model Notification {

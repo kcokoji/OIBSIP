@@ -41,6 +41,7 @@ import { capitalizeFirstLetter } from "@/lib/utils";
 
 export default function CellActions({ data }: { data: Order }) {
   const [isPending, startTransition] = useTransition();
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof StatusSchema>>({
     resolver: zodResolver(StatusSchema),
@@ -60,13 +61,14 @@ export default function CellActions({ data }: { data: Order }) {
           if (data?.error) {
             toast.error(data.error);
           }
+          setOpen(false);
           toast.info("Order updated");
         })
         .catch(() => toast.error("Something went wrong!"));
     });
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
           <span className="sr-only">Open menu</span>

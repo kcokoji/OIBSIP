@@ -155,7 +155,7 @@ export default function PizzaCard(pizza: PizzaProps) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-1 lg:grid-cols-2 place-items-center p-6 gap-4 lg:gap-10 max-h-[90vh] overflow-auto"
+            className="grid grid-cols-1 lg:grid-cols-2 place-items-center p-6 gap-4 lg:gap-10 lg:max-h-[90vh] max-h-[85vh] overflow-auto"
           >
             <DrawerClose asChild className="absolute top-8 left-4">
               <Button

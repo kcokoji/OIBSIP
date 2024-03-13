@@ -59,7 +59,6 @@ export const SignUpForm = () => {
           setError("Something went wrong!");
         });
     });
-    console.log(values);
   };
 
   return (
@@ -84,7 +83,7 @@ export const SignUpForm = () => {
                       {...field}
                       disabled={isPending}
                       placeholder="john.doe"
-                      type="name"
+                      type="text"
                     />
                   </FormControl>
                   <FormMessage />
