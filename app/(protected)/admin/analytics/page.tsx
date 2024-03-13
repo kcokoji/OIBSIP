@@ -29,7 +29,7 @@ export default async function AnalyticsPage() {
   const totalSales = await getSalesCount();
   const stockCount = await getInventoryCount();
   const totalRevenue = await getTotalRevenue();
-  const formattedTotalRevenue = convertPrice(totalRevenue!);
+  const formattedTotalRevenue = convertPrice(totalRevenue);
   const data = await getGraphRevenue();
 
   return (
