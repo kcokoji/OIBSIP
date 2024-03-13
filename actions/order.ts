@@ -35,18 +35,18 @@ export const order = async (values: z.infer<typeof OrderSchema>) => {
   const ordervalues = validatedFields.data;
 
   // Update inventory based on the order
-  await db.inventory.update({
-    where: {
-      id: "65d7a0a45f7498043c1569ce",
-    },
-    data: {
-      base: { decrement: 1 },
-      sauce: { decrement: 1 },
-      cheese: { decrement: 1 },
-      veggies: { decrement: ordervalues.veggies ? 1 : 0 },
-      meat: { decrement: 1 },
-    },
-  });
+  // await db.inventory.update({
+  //   where: {
+  //     id: "65d7a0a45f7498043c1569ce",
+  //   },
+  //   data: {
+  //     base: { decrement: 1 },
+  //     sauce: { decrement: 1 },
+  //     cheese: { decrement: 1 },
+  //     veggies: { decrement: ordervalues.veggies ? 1 : 0 },
+  //     meat: { decrement: 1 },
+  //   },
+  // });
 
   await db.order.create({
     //@ts-ignore
