@@ -47,6 +47,11 @@ export const StockSchema = z.object({
 export const StatusSchema = z.object({
   status: z.enum([OrderStatus.PROCESSING, OrderStatus.SHIPPED]),
 });
+export const SubscribeSchema = z.object({
+  email: z.string().email({
+    message: "Email is required",
+  }),
+});
 
 export const SettingsSchema = z
   .object({
