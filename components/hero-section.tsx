@@ -53,6 +53,7 @@ export default function HeroSection() {
             quality={100}
             width={400}
             height={400}
+            priority
             className=" w-full h-full rounded-full shadow-[0px_0px_20px_6px_#00000024] shadow-primary"
             alt="hero-image"
           />

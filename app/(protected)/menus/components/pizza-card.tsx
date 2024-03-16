@@ -463,11 +463,9 @@ export default function PizzaCard(pizza: PizzaProps) {
                   )}
                 />
               </div>
-            </div>
 
-            <div className="w-full absolute bottom-0 p-4">
               <Button type="submit" size="lg" className="shadow-xl w-full">
-                <span>Place an order</span>
+                Place an order
               </Button>
             </div>
           </form>
