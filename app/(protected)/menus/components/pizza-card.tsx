@@ -48,6 +48,8 @@ import { toast } from "sonner";
 import { order } from "@/actions/order";
 import { ChevronDownIcon } from "lucide-react";
 
+import pizzaImage from "@/public/img/pizza.png";
+
 interface PizzaProps {
   id: number;
   name: string;
@@ -131,12 +133,13 @@ export default function PizzaCard(pizza: PizzaProps) {
         <Card className="w-[350px] bg-inherit border-none shadow-none group">
           <CardHeader className="flex justify-center items-center">
             <Image
-              src="/img/pizza.png"
+              src={pizzaImage}
+              placeholder="blur"
+              quality={100}
               width={130}
               height={130}
               className="w-fit h-fit rounded-full group-hover:scale-95 duration-300 transition-all ease-in-out shadow-md"
               alt={pizza.name}
-              priority
             />
           </CardHeader>
           <CardContent className="space-y-4">
@@ -168,12 +171,13 @@ export default function PizzaCard(pizza: PizzaProps) {
             </DrawerClose>
             <div className="flex justify-center items-center">
               <Image
-                src="/img/pizza.png"
+                src={pizzaImage}
+                placeholder="blur"
+                quality={100}
                 width={300}
                 height={300}
                 className="w-fit h-fit rounded-full group-hover:scale-95 duration-300 transition-all ease-in-out shadow-md"
                 alt={pizza.name}
-                priority
               />
             </div>
             <div className="mx-auto w-full">
@@ -460,11 +464,12 @@ export default function PizzaCard(pizza: PizzaProps) {
                 />
               </div>
             </div>
-            <DrawerFooter className="flex justify-center w-full items-center absolute bottom-0 ">
+
+            <div className="w-full absolute bottom-0 p-4">
               <Button type="submit" size="lg" className="shadow-xl w-full">
                 <span>Place an order</span>
               </Button>
-            </DrawerFooter>
+            </div>
           </form>
         </Form>
       </DrawerContent>

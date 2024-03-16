@@ -65,6 +65,7 @@ export default function CreateButton() {
             toast.error(data.error);
           }
           if (data?.success) {
+            form.reset();
             router.refresh();
             setOpen(false);
             toast.success(data.success);

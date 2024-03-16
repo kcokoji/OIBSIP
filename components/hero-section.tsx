@@ -3,12 +3,12 @@
 import React from "react";
 import Container from "./container";
 import { motion } from "framer-motion";
-
+import pizza from "../public/img/pizza.png";
 import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <Container className="flex flex-col items-center bg-[#f2eddc] flex-grow">
+    <Container className=" bg-[#f2eddc] py-12">
       <div className="flex justify-center flex-col items-center relative space-y-4">
         <div className="py-8 space-y-2">
           <motion.h1
@@ -46,14 +46,17 @@ export default function HeroSection() {
         //   repeat: Infinity,
         // }}
         > */}
-        <Image
-          src="/img/pizza.png"
-          width={400}
-          height={400}
-          className="w-fit h-fit rounded-full shadow-[0px_0px_20px_6px_#00000024] shadow-primary"
-          alt="hero-image"
-          priority
-        />
+        <div className="pb-8">
+          <Image
+            src={pizza}
+            placeholder="blur"
+            quality={100}
+            width={400}
+            height={400}
+            className=" w-full h-full rounded-full shadow-[0px_0px_20px_6px_#00000024] shadow-primary"
+            alt="hero-image"
+          />
+        </div>
         {/* </motion.div> */}
 
         {/* <Image
