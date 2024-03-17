@@ -138,6 +138,7 @@ export default function PizzaCard(pizza: PizzaProps) {
               quality={100}
               width={130}
               height={130}
+              priority
               className="w-fit h-fit rounded-full group-hover:scale-95 duration-300 transition-all ease-in-out shadow-md"
               alt={pizza.name}
             />
@@ -176,6 +177,7 @@ export default function PizzaCard(pizza: PizzaProps) {
                 quality={100}
                 width={300}
                 height={300}
+                priority
                 className="w-fit h-fit rounded-full group-hover:scale-95 duration-300 transition-all ease-in-out shadow-md"
                 alt={pizza.name}
               />
