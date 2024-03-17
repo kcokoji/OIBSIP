@@ -14,7 +14,7 @@ export default function Features() {
               easy as pie!
             </p>
           </div>
-          <div className="grid md:grid-cols-3 md:gap-8 gap-4 items-start py-6">
+          <div className="grid md:grid-cols-3 md:gap-8 gap-6 items-start py-6">
             <div className="flex flex-col items-center space-y-2">
               <div className="flex items-center justify-center w-12 h-12 rounded-full  bg-primary/10 dark:border-gray-800">
                 <NotepadText className="text-primary" />
