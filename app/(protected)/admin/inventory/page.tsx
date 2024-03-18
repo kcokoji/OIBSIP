@@ -1,5 +1,5 @@
 import { getInventory } from "@/data/admin";
-import { DataTable } from "../components/data-table";
+import { DataTable } from "./components/data-table";
 import Header from "@/components/header";
 import CreateButton from "./components/create-button";
 import { columns } from "./components/columns";

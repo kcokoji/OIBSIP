@@ -1,7 +1,7 @@
 "use client";
 
 import { CardWrapper } from "@/components/auth/card-wrapper";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions/new-verification";
@@ -12,6 +12,7 @@ import { toast } from "sonner";
 
 export default function NewVerificationForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [error, setError] = useState<string | undefined>("");
 
@@ -19,7 +20,7 @@ export default function NewVerificationForm() {
 
   const onSubmit = useCallback(() => {
     if (!token) {
-      redirect("/login");
+      router.push("/login");
     }
     newVerification(token)
       .then((data) => {

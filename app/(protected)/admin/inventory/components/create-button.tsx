@@ -75,7 +75,6 @@ export default function CreateButton() {
           toast.error("Something went wrong!");
         });
     });
-    console.log(values);
   };
 
   return (

@@ -48,14 +48,18 @@ export const newPassword = async (
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await db.user.update({
-    where: { id: existingUser.id },
-    data: { password: hashedPassword },
-  });
+  try {
+    await db.user.update({
+      where: { id: existingUser.id },
+      data: { password: hashedPassword },
+    });
 
-  await db.passwordResetToken.delete({
-    where: { id: existingToken.id },
-  });
+    await db.passwordResetToken.delete({
+      where: { id: existingToken.id },
+    });
 
-  redirect("/login");
+    redirect("/login");
+  } catch (err) {
+    return { error: "An unexpected error occured" };
+  }
 };

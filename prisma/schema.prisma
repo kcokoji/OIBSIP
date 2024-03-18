@@ -76,7 +76,7 @@ model Order {
 
 model Inventory {
   id        String             @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
+  name      String             @unique
   category  IngredientCategory
   price     Float
   stock     Int

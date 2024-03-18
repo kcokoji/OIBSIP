@@ -49,16 +49,31 @@ import { order } from "@/actions/order";
 import { ChevronDownIcon } from "lucide-react";
 
 import pizzaImage from "@/public/img/pizza.png";
+import { Inventory } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 interface PizzaProps {
-  id: number;
-  name: string;
-  description: string;
-  basePrice: number;
+  bases: Inventory[] | null;
+  sauces: Inventory[] | null;
+  cheeses: Inventory[] | null;
+  veggies: Inventory[] | null;
+  pizza: {
+    id: number;
+    name: string;
+    description: string;
+    basePrice: number;
+  };
 }
 
-export default function PizzaCard(pizza: PizzaProps) {
+export default function PizzaCard({
+  pizza,
+  bases,
+  sauces,
+  cheeses,
+  veggies,
+}: PizzaProps) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const formattedPrice = convertPrice(pizza.basePrice);
 
@@ -116,6 +131,7 @@ export default function PizzaCard(pizza: PizzaProps) {
               form.reset();
               toast.error(data?.error);
             }
+            router.push("/orders");
             closePaymentModal();
           });
         });
@@ -125,6 +141,10 @@ export default function PizzaCard(pizza: PizzaProps) {
         toast.error("Transaction Canceled");
       },
     });
+  };
+
+  const isStockBelowThreshold = (inventory: Inventory | null): boolean => {
+    return inventory ? inventory.stock < 10 : true; // Assuming null inventories are disabled by default
   };
 
   return (
@@ -206,54 +226,20 @@ export default function PizzaCard(pizza: PizzaProps) {
                           className="flex gap-2 flex-wrap "
                         >
                           <FormItem className="flex items-center gap-2 flex-wrap ">
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="base-flat-bread"
-                            >
-                              <RadioGroupItem
-                                id="base-flat-bread"
-                                value="flat bread"
-                              />
-                              Flatbread
-                            </Label>
+                            {bases?.map((base) => (
+                              <Label
+                                key={base.id}
+                                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
+                                htmlFor={base.name}
+                              >
+                                <RadioGroupItem
+                                  id={base.name}
+                                  value={base.name}
+                                />
+                                {base.name}
+                              </Label>
+                            ))}
 
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="base-pita-bread"
-                            >
-                              <RadioGroupItem
-                                id="base-pita-bread"
-                                value="pita bread"
-                              />
-                              Pita Bread
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="wheat"
-                            >
-                              <RadioGroupItem id="wheat" value="wheat" />
-                              Wheat
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="base-classic"
-                            >
-                              <RadioGroupItem
-                                id="base-classic"
-                                value="classic"
-                              />
-                              Classic
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="york"
-                            >
-                              <RadioGroupItem id="york" value="york" />
-                              york
-                            </Label>
                             <FormMessage />
                           </FormItem>
                         </RadioGroup>
@@ -275,54 +261,19 @@ export default function PizzaCard(pizza: PizzaProps) {
                           className="flex items-center gap-2"
                         >
                           <FormItem className="flex gap-2 flex-wrap ">
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="sauce-pesto"
-                            >
-                              <RadioGroupItem id="sauce-pesto" value="pesto" />
-                              Pesto
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="sauce-alfredo"
-                            >
-                              <RadioGroupItem
-                                id="sauce-alfredo"
-                                value="alfredo"
-                              />
-                              Alfredo
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="sauce-barbecue"
-                            >
-                              <RadioGroupItem
-                                id="sauce-barbecue"
-                                value="Barbecue"
-                              />
-                              Barbecue
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="Olive"
-                            >
-                              <RadioGroupItem id="Olive" value="olive" />
-                              Olive
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="sauce-garlic"
-                            >
-                              <RadioGroupItem
-                                id="sauce-garlic"
-                                value="new york"
-                              />
-                              Garlic
-                            </Label>
+                            {sauces?.map((sauce) => (
+                              <Label
+                                key={sauce.id}
+                                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
+                                htmlFor={sauce.name}
+                              >
+                                <RadioGroupItem
+                                  id={sauce.name}
+                                  value={sauce.name}
+                                />
+                                {sauce.name}
+                              </Label>
+                            ))}
                             <FormMessage />
                           </FormItem>
                         </RadioGroup>
@@ -344,51 +295,19 @@ export default function PizzaCard(pizza: PizzaProps) {
                           className="flex items-center gap-2"
                         >
                           <FormItem className="flex gap-2 flex-wrap ">
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="cheese-mozzarella"
-                            >
-                              <RadioGroupItem
-                                id="cheese-mozzarella"
-                                value="mozzarella"
-                              />
-                              Mozzarella
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="parmesan"
-                            >
-                              <RadioGroupItem id="parmesan" value="parmesan" />
-                              Parmesan
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="cheddar"
-                            >
-                              <RadioGroupItem id="cheddar" value="cheddar" />
-                              Cheddar
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="feta-cheese"
-                            >
-                              <RadioGroupItem id="feta-cheese" value="feta" />
-                              Feta
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="ricotta-cheese"
-                            >
-                              <RadioGroupItem
-                                id="ricotta-cheese"
-                                value="ricotta"
-                              />
-                              Ricotta
-                            </Label>
+                            {cheeses?.map((cheese) => (
+                              <Label
+                                key={cheese.id}
+                                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
+                                htmlFor={cheese.name}
+                              >
+                                <RadioGroupItem
+                                  id={cheese.name}
+                                  value={cheese.name}
+                                />
+                                {cheese.name}
+                              </Label>
+                            ))}
                             <FormMessage />
                           </FormItem>
                         </RadioGroup>
@@ -412,51 +331,19 @@ export default function PizzaCard(pizza: PizzaProps) {
                           className="flex items-center gap-2"
                         >
                           <FormItem className="flex gap-2 flex-wrap ">
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="Mushrooms"
-                            >
-                              <RadioGroupItem
-                                id="Mushrooms"
-                                value="mushrooms"
-                              />
-                              Mushrooms
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="peppers"
-                            >
-                              <RadioGroupItem id="peppers" value="peppers" />
-                              Peppers
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="spinach"
-                            >
-                              <RadioGroupItem id="spinach" value="spinach" />
-                              Spinach
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="zucchini"
-                            >
-                              <RadioGroupItem id="zucchini" value="zucchini" />
-                              Zucchini
-                            </Label>
-
-                            <Label
-                              className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
-                              htmlFor="jalapenos"
-                            >
-                              <RadioGroupItem
-                                id="jalapenos"
-                                value="jalapenos"
-                              />
-                              Jalapeños
-                            </Label>
+                            {veggies?.map((veggie) => (
+                              <Label
+                                key={veggie.id}
+                                className="border cursor-pointer rounded-md p-2 flex items-center gap-2 [&:has(:checked)]:bg-gray-100 dark:[&:has(:checked)]:bg-gray-800"
+                                htmlFor={veggie.name}
+                              >
+                                <RadioGroupItem
+                                  id={veggie.name}
+                                  value={veggie.name}
+                                />
+                                {veggie.name}
+                              </Label>
+                            ))}
                             <FormMessage />
                           </FormItem>
                         </RadioGroup>

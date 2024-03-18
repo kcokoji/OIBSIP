@@ -23,6 +23,10 @@ export const order = async (values: z.infer<typeof OrderSchema>) => {
   if (!user) {
     return { error: "Unauthorized!" };
   }
+  const userId = user?.id; // Access user.id safely using optional chaining
+  if (!userId) {
+    return { error: "Unauthorized!" };
+  }
   const dbUser = await getUserById(user.id as string);
   if (!dbUser) {
     return { error: "Unauthorized!" };
@@ -33,30 +37,66 @@ export const order = async (values: z.infer<typeof OrderSchema>) => {
     return { error: "Invalid fields!" };
   }
   const ordervalues = validatedFields.data;
+  try {
+    const { base, sauce, cheese, veggies } = validatedFields.data;
 
-  // Update inventory based on the order
-  // await db.inventory.update({
-  //   where: {
-  //     id: "65d7a0a45f7498043c1569ce",
-  //   },
-  //   data: {
-  //     base: { decrement: 1 },
-  //     sauce: { decrement: 1 },
-  //     cheese: { decrement: 1 },
-  //     veggies: { decrement: ordervalues.veggies ? 1 : 0 },
-  //     meat: { decrement: 1 },
-  //   },
-  // });
+    const selectedBase = await db.inventory.findUnique({
+      where: { name: base },
+    });
+    const selectedSauce = await db.inventory.findUnique({
+      where: { name: sauce },
+    });
+    const selectedCheese = await db.inventory.findUnique({
+      where: { name: cheese },
+    });
 
-  await db.order.create({
-    //@ts-ignore
-    data: {
-      ...ordervalues,
-      userId: user.id,
-    },
-  });
-  revalidatePath("/admin", "layout");
-  redirect("/orders");
+    const selectedVeggies = await db.inventory.findUnique({
+      where: { name: veggies },
+    });
+
+    if (
+      !selectedBase?.stock ||
+      !selectedSauce?.stock ||
+      !selectedCheese?.stock ||
+      !selectedVeggies?.stock
+    ) {
+      return {
+        error:
+          "One or more selected items not found in inventory or have nullish stock.",
+      };
+    }
+
+    await db.inventory.update({
+      where: { id: selectedBase.id },
+      data: { stock: selectedBase.stock - 1 },
+    });
+
+    await db.inventory.update({
+      where: { id: selectedSauce.id },
+      data: { stock: selectedSauce.stock - 1 },
+    });
+
+    await db.inventory.update({
+      where: { id: selectedCheese.id },
+      data: { stock: selectedCheese.stock - 1 },
+    });
+
+    await db.inventory.update({
+      where: { id: selectedVeggies.id },
+      data: { stock: selectedVeggies.stock - 1 },
+    });
+
+    await db.order.create({
+      //@ts-ignore
+      data: {
+        ...ordervalues,
+        userId,
+      },
+    });
+    revalidatePath("/admin", "layout");
+  } catch (err) {
+    return { error: "An unexpected error occured" };
+  }
 };
 
 export const orderStatus = async (values: OrderProps) => {
@@ -65,11 +105,15 @@ export const orderStatus = async (values: OrderProps) => {
   if (userRole !== UserRole.ADMIN) {
     return { error: "Unauthorized" };
   }
-  await db.order.update({
-    where: { id: values.id },
-    data: {
-      status: values.status,
-    },
-  });
+  try {
+    await db.order.update({
+      where: { id: values.id },
+      data: {
+        status: values.status,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
   revalidatePath("/admin");
 };
