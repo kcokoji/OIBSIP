@@ -36,13 +36,11 @@ import {
 } from "@/components/ui/form";
 import { UpdateInventorySchema } from "@/schemas";
 import { IngredientCategory, Inventory } from "@prisma/client";
-import {
-  UpdateInventory,
-  createInventory,
-  deleteInventory,
-} from "@/actions/inventory";
+import { UpdateInventory, deleteInventory } from "@/actions/inventory";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+
+import { MoreVertical } from "lucide-react";
 
 export default function CellActions(data: Inventory) {
   const [isPending, startTransition] = useTransition();
@@ -74,7 +72,7 @@ export default function CellActions(data: Inventory) {
           }
         })
         .catch(() => {
-          toast.error("Something went wrong!");
+          toast.error("Oops! Something went wrong!");
         });
     });
   };
@@ -91,7 +89,7 @@ export default function CellActions(data: Inventory) {
           }
         })
         .catch(() => {
-          toast.error("Something went wrong!");
+          toast.error("Oops! Something went wrong!");
         });
     });
   };
@@ -99,7 +97,10 @@ export default function CellActions(data: Inventory) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="link">Edit</Button>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreVertical className="h-4 w-4" />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

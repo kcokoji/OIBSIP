@@ -1,11 +1,16 @@
 import Image from "next/image";
 
 import Notifications from "./notifications";
-
+import { Notification } from "@prisma/client";
 import Link from "next/link";
 import { UserButton, UserProps } from "@/components/user-button";
 
-export default function Header(user: UserProps) {
+interface Props {
+  user: UserProps;
+  notifications: Notification[] | null;
+}
+
+export default function Header({ user, notifications }: Props) {
   return (
     <header className="flex h-14 lg:h-[60px] items-center justify-between gap-4 border-b bg-white sticky top-0 z-50 px-6 dark:bg-gray-800/40">
       <Link href="/" className=" lg:hidden">
@@ -22,7 +27,7 @@ export default function Header(user: UserProps) {
       </Link>
 
       <div className="flex  items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <Notifications />
+        <Notifications notifications={notifications} />
         <div className=" lg:hidden">
           <UserButton {...user} />
         </div>

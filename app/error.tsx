@@ -23,7 +23,7 @@ export default function Error({
       <Navbar />
       <div className="py-8 space-y-4 h-screen flex items-center flex-col">
         <Header title="505" />
-        <p className="text-xl text-gray-400">Something went wrong</p>
+        <p className="text-xl text-gray-400">Oops! Something went wrong</p>
         <Button
           size="lg"
           onClick={

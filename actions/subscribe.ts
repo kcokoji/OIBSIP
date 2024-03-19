@@ -27,6 +27,6 @@ export const subscribe = async (values: z.infer<typeof SubscribeSchema>) => {
     });
     return { success: "You have successfully subscribed to our email list" };
   } catch (err) {
-    return { error: "An unexpected error occured" };
+    return { error: "Oops! Something went wrong" };
   }
 };

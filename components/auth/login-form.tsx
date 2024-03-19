@@ -58,7 +58,7 @@ export const LoginForm = () => {
             setError(data.error);
           }
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError("Oops! Something went wrong!"));
     });
   };
 

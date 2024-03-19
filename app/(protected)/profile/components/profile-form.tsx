@@ -44,6 +44,7 @@ import Loader from "@/components/ui/loader";
 import { toast } from "sonner";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import DeleteButton from "./delete-account-form";
 
 export default function ProfileCard() {
   const user = useCurrentUser();
@@ -79,7 +80,7 @@ export default function ProfileCard() {
             toast.info(data?.success);
           }
         })
-        .catch(() => toast.error("Something went wrong!"));
+        .catch(() => toast.error("Oops! Something went wrong!"));
     });
   };
 
@@ -233,7 +234,7 @@ export default function ProfileCard() {
                   )}
                 />
 
-                <CardFooter className="flex space-x-2">
+                <CardFooter className="flex space-x-2 ">
                   <Button
                     className="ml-auto"
                     disabled={isPending}
@@ -248,6 +249,7 @@ export default function ProfileCard() {
                 </CardFooter>
               </form>
             </Form>
+            <DeleteButton id={user?.id} />
           </CardContent>
         </Card>
       </div>

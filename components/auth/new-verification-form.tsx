@@ -1,7 +1,7 @@
 "use client";
 
 import { CardWrapper } from "@/components/auth/card-wrapper";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions/new-verification";
@@ -12,15 +12,17 @@ import { toast } from "sonner";
 
 export default function NewVerificationForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [error, setError] = useState<string | undefined>("");
 
-  const token = searchParams.get("token");
+  const token = searchParams.get("token") as string;
+
+  if (!token) {
+    router.push("/login");
+  }
 
   const onSubmit = useCallback(() => {
-    if (!token) {
-      redirect("/login");
-    }
     newVerification(token)
       .then((data) => {
         if (data?.error) {
@@ -29,7 +31,7 @@ export default function NewVerificationForm() {
         toast.success("Email Verified");
       })
       .catch(() => {
-        setError("Something went wrong");
+        setError("Oops! Something went wrong");
       });
   }, [token]);
 

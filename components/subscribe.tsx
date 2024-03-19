@@ -33,7 +33,7 @@ export default function Subscribe() {
             form.reset();
           }
         })
-        .catch(() => toast.error("Something went wrong!"));
+        .catch(() => toast.error("Oops! Something went wrong!"));
     });
   };
 
@@ -48,7 +48,7 @@ export default function Subscribe() {
               the latest updates.
             </p>
           </div>
-          <div className="mx-auto w-full max-w-sm space-y-2 lg:py-6 py-4">
+          <div className="mx-auto w-full max-w-sm space-y-2 py-6 ">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}

@@ -1,3 +1,5 @@
+import { db } from "@/lib/db";
+import { IngredientCategory } from "@prisma/client";
 export const PizzaInfo = [
   {
     id: 1,
@@ -70,3 +72,20 @@ export const PizzaInfo = [
     basePrice: 9000,
   },
 ];
+
+export async function getInventory(category: IngredientCategory) {
+  try {
+    const inventory = await db.inventory.findMany({
+      where: {
+        category,
+        stock: {
+          gt: 1,
+        },
+      },
+    });
+
+    return inventory;
+  } catch (err) {
+    return null;
+  }
+}

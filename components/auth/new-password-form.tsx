@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { NewPasswordSchema } from "@/schemas";
@@ -28,9 +28,10 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const router = useRouter();
 
   if (!token) {
-    redirect("/login");
+    router.push("/login");
   }
 
   const [error, setError] = useState<string | undefined>("");

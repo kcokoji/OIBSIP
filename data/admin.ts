@@ -23,6 +23,24 @@ export const getOrders = async () => {
     return null;
   }
 };
+export const getNotifications = async () => {
+  const userRole = await currentRole();
+  if (userRole !== UserRole.ADMIN) {
+    return null;
+  }
+  try {
+    const notifications = await db.notification.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 10,
+    });
+
+    return notifications;
+  } catch {
+    return null;
+  }
+};
 
 export const countProcessingOrders = async () => {
   const userRole = await currentRole();

@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Inventory, Order } from "@prisma/client";
 import { PizzaInfo } from "@/data/pizza-info";
+import { formatDistanceToNow } from "date-fns";
 
 interface AdminOrder {
   id: string;
@@ -72,7 +73,9 @@ export function formatAdminOrderData(orders: AdminOrder[]) {
       name: order.user.name,
       email: order.user.email,
       status: order.status,
-      createdAt: formatDateString(order.createdAt),
+      createdAt: formatDistanceToNow(new Date(order.createdAt), {
+        addSuffix: true,
+      }),
       reference: order.reference,
       pizzaName: pizza?.name,
       pizzaPrice: convertPrice(pizza?.price),
