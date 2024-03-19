@@ -64,7 +64,7 @@ export default function CellActions({ data }: { data: Order }) {
           setOpen(false);
           toast.info("Order updated");
         })
-        .catch(() => toast.error("Something went wrong!"));
+        .catch(() => toast.error("Oops! Something went wrong!"));
     });
   };
   return (

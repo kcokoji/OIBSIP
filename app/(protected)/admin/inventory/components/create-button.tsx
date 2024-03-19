@@ -72,7 +72,7 @@ export default function CreateButton() {
           }
         })
         .catch(() => {
-          toast.error("Something went wrong!");
+          toast.error("Oops! Something went wrong!");
         });
     });
   };

@@ -23,21 +23,17 @@ export const signUp = async (values: z.infer<typeof SignUpSchema>) => {
     return { error: "Email already in use!" };
   }
 
-  try {
-    await db.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      },
-    });
-    const verficationToken = await generateVerificationToken(email);
-    await sendVerificationEmail(verficationToken.email, verficationToken.token);
+  await db.user.create({
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+    },
+  });
+  const verficationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(verficationToken.email, verficationToken.token);
 
-    return {
-      success: `We have sent a confirmation link to ${email} click the link to verify your email`,
-    };
-  } catch (err) {
-    return { error: "An unexpected error occured" };
-  }
+  return {
+    success: `We have sent a confirmation link to ${email} click the link to verify your email`,
+  };
 };

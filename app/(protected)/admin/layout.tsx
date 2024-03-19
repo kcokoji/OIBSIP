@@ -1,6 +1,6 @@
 import { currentRole, currentUser } from "@/lib/auth";
 import SideBar from "./components/side-navbar";
-import { countProcessingOrders } from "@/data/admin";
+import { countProcessingOrders, getNotifications } from "@/data/admin";
 import { UserRole } from "@prisma/client";
 import NotFound from "@/app/not-found";
 import Header from "./components/header";
@@ -18,6 +18,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const user = (await currentUser()) as UserProps;
+  const notifications = await getNotifications();
   const userRole = await currentRole();
   const count = await countProcessingOrders();
   if (userRole !== UserRole.ADMIN) {
@@ -31,7 +32,7 @@ export default async function AdminLayout({
 
         <section className=" overflow-y-auto">
           {" "}
-          <Header {...user} />
+          <Header user={user} notifications={notifications} />
           <MobileNav count={count} />
           {children}
         </section>

@@ -72,7 +72,7 @@ export default function CellActions(data: Inventory) {
           }
         })
         .catch(() => {
-          toast.error("Something went wrong!");
+          toast.error("Oops! Something went wrong!");
         });
     });
   };
@@ -89,7 +89,7 @@ export default function CellActions(data: Inventory) {
           }
         })
         .catch(() => {
-          toast.error("Something went wrong!");
+          toast.error("Oops! Something went wrong!");
         });
     });
   };

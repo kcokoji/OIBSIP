@@ -37,66 +37,64 @@ export const order = async (values: z.infer<typeof OrderSchema>) => {
     return { error: "Invalid fields!" };
   }
   const ordervalues = validatedFields.data;
-  try {
-    const { base, sauce, cheese, veggies } = validatedFields.data;
 
-    const selectedBase = await db.inventory.findUnique({
-      where: { name: base },
-    });
-    const selectedSauce = await db.inventory.findUnique({
-      where: { name: sauce },
-    });
-    const selectedCheese = await db.inventory.findUnique({
-      where: { name: cheese },
-    });
+  const { base, sauce, cheese, veggies } = validatedFields.data;
 
-    const selectedVeggies = await db.inventory.findUnique({
-      where: { name: veggies },
-    });
+  const selectedBase = await db.inventory.findUnique({
+    where: { name: base },
+  });
+  const selectedSauce = await db.inventory.findUnique({
+    where: { name: sauce },
+  });
+  const selectedCheese = await db.inventory.findUnique({
+    where: { name: cheese },
+  });
 
-    if (
-      !selectedBase?.stock ||
-      !selectedSauce?.stock ||
-      !selectedCheese?.stock ||
-      !selectedVeggies?.stock
-    ) {
-      return {
-        error:
-          "One or more selected items not found in inventory or have nullish stock.",
-      };
-    }
+  const selectedVeggies = await db.inventory.findUnique({
+    where: { name: veggies },
+  });
 
-    await db.inventory.update({
-      where: { id: selectedBase.id },
-      data: { stock: selectedBase.stock - 1 },
-    });
-
-    await db.inventory.update({
-      where: { id: selectedSauce.id },
-      data: { stock: selectedSauce.stock - 1 },
-    });
-
-    await db.inventory.update({
-      where: { id: selectedCheese.id },
-      data: { stock: selectedCheese.stock - 1 },
-    });
-
-    await db.inventory.update({
-      where: { id: selectedVeggies.id },
-      data: { stock: selectedVeggies.stock - 1 },
-    });
-
-    await db.order.create({
-      //@ts-ignore
-      data: {
-        ...ordervalues,
-        userId,
-      },
-    });
-    revalidatePath("/admin", "layout");
-  } catch (err) {
-    return { error: "An unexpected error occured" };
+  if (
+    !selectedBase?.stock ||
+    !selectedSauce?.stock ||
+    !selectedCheese?.stock ||
+    !selectedVeggies?.stock
+  ) {
+    return {
+      error:
+        "One or more selected items not found in inventory or have nullish stock.",
+    };
   }
+
+  await db.inventory.update({
+    where: { id: selectedBase.id },
+    data: { stock: selectedBase.stock - 1 },
+  });
+
+  await db.inventory.update({
+    where: { id: selectedSauce.id },
+    data: { stock: selectedSauce.stock - 1 },
+  });
+
+  await db.inventory.update({
+    where: { id: selectedCheese.id },
+    data: { stock: selectedCheese.stock - 1 },
+  });
+
+  await db.inventory.update({
+    where: { id: selectedVeggies.id },
+    data: { stock: selectedVeggies.stock - 1 },
+  });
+
+  await db.order.create({
+    //@ts-ignore
+    data: {
+      ...ordervalues,
+      userId,
+    },
+  });
+  revalidatePath("/admin", "layout");
+  redirect("/orders");
 };
 
 export const orderStatus = async (values: OrderProps) => {
@@ -105,15 +103,13 @@ export const orderStatus = async (values: OrderProps) => {
   if (userRole !== UserRole.ADMIN) {
     return { error: "Unauthorized" };
   }
-  try {
-    await db.order.update({
-      where: { id: values.id },
-      data: {
-        status: values.status,
-      },
-    });
-  } catch (err) {
-    console.log(err);
-  }
+
+  await db.order.update({
+    where: { id: values.id },
+    data: {
+      status: values.status,
+    },
+  });
+
   revalidatePath("/admin");
 };

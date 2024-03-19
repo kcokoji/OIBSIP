@@ -16,12 +16,13 @@ export default function NewVerificationForm() {
 
   const [error, setError] = useState<string | undefined>("");
 
-  const token = searchParams.get("token");
+  const token = searchParams.get("token") as string;
+
+  if (!token) {
+    router.push("/login");
+  }
 
   const onSubmit = useCallback(() => {
-    if (!token) {
-      router.push("/login");
-    }
     newVerification(token)
       .then((data) => {
         if (data?.error) {
@@ -30,7 +31,7 @@ export default function NewVerificationForm() {
         toast.success("Email Verified");
       })
       .catch(() => {
-        setError("Something went wrong");
+        setError("Oops! Something went wrong");
       });
   }, [token]);
 

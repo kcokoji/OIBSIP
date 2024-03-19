@@ -16,7 +16,6 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -126,14 +125,18 @@ export default function PizzaCard({
           toast.error("Failed Transaction");
         }
         startTransition(() => {
-          order(orderValues).then((data) => {
-            if (data?.error) {
-              form.reset();
-              toast.error(data?.error);
-            }
-            router.push("/orders");
-            closePaymentModal();
-          });
+          order(orderValues)
+            .then((data) => {
+              if (data?.error) {
+                form.reset();
+                toast.error(data?.error);
+              }
+              toast.success("Order successfully placed");
+              closePaymentModal();
+            })
+            .catch((error) => {
+              toast.error("Oops! Something went wrong!");
+            });
         });
       },
       onClose: () => {

@@ -79,7 +79,7 @@ export async function getInventory(category: IngredientCategory) {
       where: {
         category,
         stock: {
-          gte: 1,
+          gt: 1,
         },
       },
     });

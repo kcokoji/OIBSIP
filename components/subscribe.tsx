@@ -33,7 +33,7 @@ export default function Subscribe() {
             form.reset();
           }
         })
-        .catch(() => toast.error("Something went wrong!"));
+        .catch(() => toast.error("Oops! Something went wrong!"));
     });
   };
 

@@ -56,7 +56,7 @@ export const SignUpForm = () => {
           }
         })
         .catch(() => {
-          setError("Something went wrong!");
+          setError("Oops! Something went wrong!");
         });
     });
   };

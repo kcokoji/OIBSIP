@@ -2,6 +2,9 @@ import { render } from "@react-email/render";
 import nodemailer from "nodemailer";
 import ConfirmationEmail from "@/emails/confirmation-email";
 import ResetPasswordEmail from "@/emails/reset-email";
+import { db } from "./db";
+import NotifcationsEmail from "@/emails/notifications.email";
+import { LowStockItem } from "@/app/api/notifications/route";
 
 const email = process.env.EMAIL;
 
@@ -21,27 +24,68 @@ export const sendPasswordResetEmail = async (
   userEmail: string,
   token: string
 ) => {
-  const emailHtml = render(ResetPasswordEmail({ token }));
+  try {
+    const emailHtml = render(ResetPasswordEmail({ token }));
 
-  await transporter.sendMail({
-    from: email,
-    to: userEmail,
-    subject: "Reset your password",
-    html: emailHtml,
-  });
+    await transporter.sendMail({
+      from: `"Pizzeria" <${email}>`,
+      to: userEmail,
+      subject: "Reset your password",
+      html: emailHtml,
+    });
+  } catch (error) {
+    console.log("Error sending password reset email:", error);
+  }
+};
+
+const getAdminUsers = async () => {
+  try {
+    const adminUsers = await db.user.findMany({
+      where: {
+        role: "ADMIN",
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    return adminUsers.map((user) => user.email);
+  } catch (error) {
+    console.error("Error retrieving admin users:", error);
+    return null;
+  }
+};
+
+export const notifcationEmail = async (lowStockItems: LowStockItem[]) => {
+  try {
+    const emailHtml = render(NotifcationsEmail({ lowStockItems }));
+    const admins = await getAdminUsers();
+    await transporter.sendMail({
+      from: `"Pizzeria" <${email}>`,
+      to: admins?.join(","),
+      subject: "Low stock notification",
+      html: emailHtml,
+    });
+  } catch (error) {
+    console.error("Error sending low stock notification emails:", error);
+  }
 };
 
 export const sendVerificationEmail = async (
   userEmail: string,
   token: string
 ) => {
-  const emailHtml = render(ConfirmationEmail({ token }));
+  try {
+    const emailHtml = render(ConfirmationEmail({ token }));
 
-  await transporter.sendMail({
-    from: `"Pizzeria" <${email}>`, // sender address
-    to: userEmail, // list of receivers
-    subject: "Confirm your email", // Subject line
-    text: "Hello world?", // plain text body
-    html: emailHtml,
-  });
+    await transporter.sendMail({
+      from: `"Pizzeria" <${email}>`, // sender address
+      to: userEmail, // list of receivers
+      subject: "Confirm your email", // Subject line
+      text: "Hello world?", // plain text body
+      html: emailHtml,
+    });
+  } catch (err) {
+    console.log("Error sending verification email:", err);
+  }
 };
