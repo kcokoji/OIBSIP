@@ -38,7 +38,7 @@ export default function Notifications({ notifications }: Props) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {notifications && notifications.length > 0 ? (
-          <div className="py-2 divide-y divide-slate-300 space-y-1">
+          <div className=" divide-y divide-slate-300">
             {notifications.map((notification) => (
               <DropdownMenuItem
                 key={notification.id}

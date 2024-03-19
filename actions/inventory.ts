@@ -68,20 +68,10 @@ export const UpdateInventory = async (
     return { error: "Invalid fields" };
   }
 
-  const { name, stock, price, category } = validatedFields.data;
-  const lowerName = name?.toLowerCase();
+  const { stock, price, category } = validatedFields.data;
+
   const NumPrice = parseFloat(price!);
   const NumStock = parseInt(stock!);
-
-  const existingInventory = await db.inventory.findFirst({
-    where: {
-      name,
-    },
-  });
-
-  if (existingInventory) {
-    return { error: "Inventory already exists" };
-  }
 
   try {
     await db.inventory.update({
@@ -89,7 +79,6 @@ export const UpdateInventory = async (
         id,
       },
       data: {
-        name: lowerName,
         stock: NumStock,
         price: NumPrice,
         category,

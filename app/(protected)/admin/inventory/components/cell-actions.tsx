@@ -50,7 +50,6 @@ export default function CellActions(data: Inventory) {
   const form = useForm<z.infer<typeof UpdateInventorySchema>>({
     resolver: zodResolver(UpdateInventorySchema),
     defaultValues: {
-      name: data.name,
       price: data.price.toString(),
       stock: data.stock.toString(),
       category: data.category,
@@ -113,24 +112,6 @@ export default function CellActions(data: Inventory) {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid gap-2 py-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="e.g Chicken"
-                        type="text"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="price"

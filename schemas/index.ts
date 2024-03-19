@@ -148,11 +148,6 @@ export const InventorySchema = z.object({
   ]),
 });
 export const UpdateInventorySchema = z.object({
-  name: z.optional(
-    z.string().min(1, {
-      message: "Name is  required",
-    })
-  ),
   price: z.optional(
     z.string().min(1, {
       message: "Price is required",
