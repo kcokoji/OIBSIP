@@ -23,12 +23,12 @@ export default function PaymentRequestEmail({ token }: ConfirmationEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Chimoney Payment Request</Preview>
+      <Preview>Email confrimation</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={coverSection}>
             <Section style={upperSection}>
-              <Heading style={h1}>Payment Request</Heading>
+              <Heading style={h1}>Email Confirmation</Heading>
               <Text style={mainText}>
                 Thanks for creating an account with Pizzeria. Before you can get
                 started, we&apos;ll need to verify your email. Please click on
