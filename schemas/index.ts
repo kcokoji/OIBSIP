@@ -45,7 +45,7 @@ export const StockSchema = z.object({
 });
 
 export const StatusSchema = z.object({
-  status: z.enum([OrderStatus.PROCESSING, OrderStatus.SHIPPED]),
+  status: z.enum([OrderStatus.PROCESSING, OrderStatus.READY]),
 });
 export const SubscribeSchema = z.object({
   email: z.string().email({
@@ -126,7 +126,6 @@ export const OrderSchema = z.object({
     message: "Select a cheese",
   }),
   veggies: z.optional(z.string()),
-  reference: z.optional(z.string()),
 });
 
 export const InventorySchema = z.object({

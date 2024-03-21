@@ -1,5 +1,12 @@
 "use client";
-import { CookingPot, HandCoins, NotepadText, Pizza, Truck } from "lucide-react";
+import {
+  BellRing,
+  CandlestickChart,
+  CookingPot,
+  HandCoins,
+  NotepadText,
+  ShieldCheck,
+} from "lucide-react";
 import SubHeading from "./sub-heading";
 
 export default function Features() {
@@ -10,11 +17,12 @@ export default function Features() {
           <div className="space-y-3">
             <SubHeading title=" How It Works" />
             <p className="mx-auto max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-              Enjoy the convenience of our pizza delivery service. It&apos;s as
-              easy as pie!
+              Enjoy the convenience of our pizza ordering system. No more
+              waiting on long queues to place an order you can do it by
+              yourself.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 md:gap-8 gap-6 items-start py-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 gap-6 place-items-center py-6">
             <div className="flex flex-col items-center space-y-2">
               <div className="flex items-center justify-center w-12 h-12 rounded-full  bg-primary/10 dark:border-gray-800">
                 <NotepadText className="text-primary" />
@@ -39,12 +47,45 @@ export default function Features() {
             </div>
             <div className="flex flex-col items-center space-y-2">
               <div className="flex items-center justify-center w-12 h-12 rounded-full  bg-primary/10 dark:border-gray-800">
-                <Truck className="text-primary" />
+                <BellRing className="text-primary" />
               </div>
-              <h3 className="text-lg font-semibold">Delivery</h3>
+              <h3 className="text-lg font-semibold">Notification</h3>
               <p className="text-sm text-center text-gray-500 dark:text-gray-400">
-                Your pizza is on the way! We package it with care and deliver it
-                to your doorstep.
+                Receive notifications about your order status. You&#39;ll be
+                notified when your order is confirmed, being prepared, and ready
+                for pickup or delivery.
+              </p>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full  bg-primary/10 dark:border-gray-800">
+                <ShieldCheck className="text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold">Admin controls</h3>
+              <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+                Switch to admin profile to access advanced controls. Manage
+                orders, view analytics, and update customer orders with ease.
+              </p>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full  bg-primary/10 dark:border-gray-800">
+                <CandlestickChart className="text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold">Analytics</h3>
+              <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+                Gain insights into your business with detailed analytics of
+                orders. Track sales, inventory, and customer preferences to
+                optimize your pizza offerings.
+              </p>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 dark:border-gray-800">
+                <CookingPot className="text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold">Order Tracking</h3>
+              <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+                Keep track of your order every step of the way. From start to
+                finish, you&#39;ll know exactly where your pizza is and when
+                it&#39;s expected to be ready.
               </p>
             </div>
           </div>

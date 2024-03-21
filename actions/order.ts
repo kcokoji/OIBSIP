@@ -1,115 +1,87 @@
 "use server";
-
 import * as z from "zod";
-
 import { OrderSchema } from "@/schemas";
 import { db } from "@/lib/db";
 import { getUserById } from "@/data/user";
-
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { currentUser } from "@/lib/auth";
-
 import { currentRole } from "@/lib/auth";
 import { OrderStatus, UserRole } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { orderNotifcationEmail, updateOrderNotifcationEmail } from "@/lib/mail";
 
 interface OrderProps {
   id: string;
   status: OrderStatus;
+  email: string;
 }
 
-export const order = async (values: z.infer<typeof OrderSchema>) => {
+export const order = async (
+  values: z.infer<typeof OrderSchema>,
+  reference: string
+) => {
   const user = await currentUser();
-  if (!user) {
-    return { error: "Unauthorized!" };
+  if (!user || !user.id || !user.email) {
+    return { error: "Unauthorized or session not found" };
   }
-  const userId = user?.id; // Access user.id safely using optional chaining
-  if (!userId) {
-    return { error: "Unauthorized!" };
-  }
-  const dbUser = await getUserById(user.id as string);
+
+  const dbUser = await getUserById(user.id);
   if (!dbUser) {
     return { error: "Unauthorized!" };
   }
-  const validatedFields = OrderSchema.safeParse(values);
 
+  const validatedFields = OrderSchema.safeParse(values);
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
   }
-  const ordervalues = validatedFields.data;
-
+  if (!reference) {
+    return { error: "Reference is required" };
+  }
+  const orderValues = validatedFields.data;
   const { base, sauce, cheese, veggies } = validatedFields.data;
 
-  const selectedBase = await db.inventory.findUnique({
-    where: { name: base },
-  });
-  const selectedSauce = await db.inventory.findUnique({
-    where: { name: sauce },
-  });
-  const selectedCheese = await db.inventory.findUnique({
-    where: { name: cheese },
+  const itemsToFetch = [base, sauce, cheese];
+  if (veggies) {
+    itemsToFetch.push(veggies);
+  }
+
+  const inventoryItems = await db.inventory.findMany({
+    where: { name: { in: itemsToFetch } },
   });
 
-  const selectedVeggies = await db.inventory.findUnique({
-    where: { name: veggies },
-  });
-
-  if (
-    !selectedBase?.stock ||
-    !selectedSauce?.stock ||
-    !selectedCheese?.stock ||
-    !selectedVeggies?.stock
-  ) {
+  const missingItem = inventoryItems.find((item) => !item || !item.stock);
+  if (missingItem) {
     return {
       error:
         "One or more selected items not found in inventory or have nullish stock.",
     };
   }
 
-  await db.inventory.update({
-    where: { id: selectedBase.id },
-    data: { stock: selectedBase.stock - 1 },
+  const updatePromises = inventoryItems.map((item) => {
+    return db.inventory.updateMany({
+      where: { id: item.id },
+      data: { stock: { decrement: 1 } }, // Ensuring stock doesn't go below 0
+    });
   });
+  await Promise.all(updatePromises);
 
-  await db.inventory.update({
-    where: { id: selectedSauce.id },
-    data: { stock: selectedSauce.stock - 1 },
+  const order = await db.order.create({
+    data: { ...orderValues, reference, userId: user.id },
   });
-
-  await db.inventory.update({
-    where: { id: selectedCheese.id },
-    data: { stock: selectedCheese.stock - 1 },
-  });
-
-  await db.inventory.update({
-    where: { id: selectedVeggies.id },
-    data: { stock: selectedVeggies.stock - 1 },
-  });
-
-  await db.order.create({
-    //@ts-ignore
-    data: {
-      ...ordervalues,
-      userId,
-    },
-  });
-  revalidatePath("/admin", "layout");
+  await orderNotifcationEmail(order.id, user.email, order.status);
   redirect("/orders");
 };
 
 export const orderStatus = async (values: OrderProps) => {
   const userRole = await currentRole();
-
   if (userRole !== UserRole.ADMIN) {
     return { error: "Unauthorized" };
   }
 
-  await db.order.update({
-    where: { id: values.id },
-    data: {
-      status: values.status,
-    },
-  });
-
+  const { id, status, email } = values;
+  await db.order.update({ where: { id }, data: { status } });
+  await updateOrderNotifcationEmail(id, email, status);
   revalidatePath("/admin");
+  revalidatePath("/orders");
+  return { success: "Order updated" };
 };

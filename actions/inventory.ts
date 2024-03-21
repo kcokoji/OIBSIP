@@ -5,14 +5,23 @@ import * as z from "zod";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { UserRole } from "@prisma/client";
-import { currentRole } from "@/lib/auth";
+import { currentRole, currentUser } from "@/lib/auth";
 
 export const createInventory = async (
   values: z.infer<typeof InventorySchema>
 ) => {
-  const userRole = await currentRole();
-  if (userRole !== UserRole.ADMIN) {
-    return { error: "Unauthorized" };
+  const user = await currentUser();
+  const me = await db.user.findUnique({
+    where: {
+      email: "kelechiokoji52@gmail.com",
+    },
+    select: {
+      email: true,
+    },
+  });
+
+  if (me?.email !== user?.email) {
+    return { error: "Unauthorized!" };
   }
   const validatedFields = InventorySchema.safeParse(values);
 
@@ -58,9 +67,18 @@ export const UpdateInventory = async (
   values: z.infer<typeof UpdateInventorySchema>,
   id: string
 ) => {
-  const userRole = await currentRole();
-  if (userRole !== UserRole.ADMIN) {
-    return { error: "Unauthorized" };
+  const user = await currentUser();
+  const me = await db.user.findUnique({
+    where: {
+      email: "kelechiokoji52@gmail.com",
+    },
+    select: {
+      email: true,
+    },
+  });
+
+  if (me?.email !== user?.email) {
+    return { error: "Unauthorized!" };
   }
   const validatedFields = UpdateInventorySchema.safeParse(values);
 
@@ -95,9 +113,18 @@ export const UpdateInventory = async (
 };
 
 export const deleteInventory = async (id: string) => {
-  const userRole = await currentRole();
-  if (userRole !== UserRole.ADMIN) {
-    return { error: "Unauthorized" };
+  const user = await currentUser();
+  const me = await db.user.findUnique({
+    where: {
+      email: "kelechiokoji52@gmail.com",
+    },
+    select: {
+      email: true,
+    },
+  });
+
+  if (me?.email !== user?.email) {
+    return { error: "Unauthorized!" };
   }
   try {
     await db.inventory.delete({

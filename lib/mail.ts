@@ -5,6 +5,9 @@ import ResetPasswordEmail from "@/emails/reset-email";
 import { db } from "./db";
 import NotifcationsEmail from "@/emails/notifications.email";
 import { LowStockItem } from "@/app/api/notifications/route";
+import OrderNotificationEmail from "@/emails/order-email";
+import updateOrderNotificationEmail from "@/emails/update-order-email";
+import { OrderStatus } from "@prisma/client";
 
 const email = process.env.EMAIL;
 
@@ -68,6 +71,43 @@ export const notifcationEmail = async (lowStockItems: LowStockItem[]) => {
     });
   } catch (error) {
     console.error("Error sending low stock notification emails:", error);
+  }
+};
+
+export const orderNotifcationEmail = async (
+  orderId: string,
+  email: string,
+  status: OrderStatus
+) => {
+  try {
+    const emailHtml = render(OrderNotificationEmail({ orderId, status }));
+
+    await transporter.sendMail({
+      from: `"Pizzeria" <${email}>`,
+      to: email,
+      subject: "Order notification",
+      html: emailHtml,
+    });
+  } catch (error) {
+    console.error("Error sending order notification emails:", error);
+  }
+};
+export const updateOrderNotifcationEmail = async (
+  orderId: string,
+  email: string,
+  status: OrderStatus
+) => {
+  try {
+    const emailHtml = render(updateOrderNotificationEmail({ orderId, status }));
+
+    await transporter.sendMail({
+      from: `"Pizzeria" <${email}>`,
+      to: email,
+      subject: "Order notification",
+      html: emailHtml,
+    });
+  } catch (error) {
+    console.error("Error sending update order notification emails:", error);
   }
 };
 

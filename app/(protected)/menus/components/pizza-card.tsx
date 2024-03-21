@@ -119,13 +119,12 @@ export default function PizzaCard({
     setOpen(false);
     handleFlutterPayment({
       callback: (response) => {
-        const reference = response.tx_ref;
-        const orderValues = { ...values, reference: reference };
         if (response.status !== "completed") {
           toast.error("Failed Transaction");
         }
+        const reference = response.tx_ref;
         startTransition(() => {
-          order(orderValues)
+          order(values, reference)
             .then((data) => {
               if (data?.error) {
                 form.reset();
@@ -144,10 +143,6 @@ export default function PizzaCard({
         toast.error("Transaction Canceled");
       },
     });
-  };
-
-  const isStockBelowThreshold = (inventory: Inventory | null): boolean => {
-    return inventory ? inventory.stock < 10 : true; // Assuming null inventories are disabled by default
   };
 
   return (

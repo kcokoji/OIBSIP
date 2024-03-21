@@ -54,6 +54,7 @@ export default function CellActions({ data }: { data: Order }) {
     const status = {
       id: data.id,
       status: values.status,
+      email: data.email,
     };
     startTransition(() => {
       orderStatus(status)
@@ -62,7 +63,7 @@ export default function CellActions({ data }: { data: Order }) {
             toast.error(data.error);
           }
           setOpen(false);
-          toast.info("Order updated");
+          toast.info(data.success);
         })
         .catch(() => toast.error("Oops! Something went wrong!"));
     });
@@ -178,11 +179,11 @@ export default function CellActions({ data }: { data: Order }) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value={OrderStatus.SHIPPED}>
-                            Shipped
-                          </SelectItem>
                           <SelectItem value={OrderStatus.PROCESSING}>
                             Processing
+                          </SelectItem>
+                          <SelectItem value={OrderStatus.READY}>
+                            Ready
                           </SelectItem>
                         </SelectContent>
                       </Select>

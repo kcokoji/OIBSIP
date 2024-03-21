@@ -25,7 +25,7 @@ enum IngredientCategory {
 
 enum OrderStatus {
   PROCESSING
-  SHIPPED
+  READY
 }
 
 model User {
@@ -65,7 +65,7 @@ model Order {
   sauce     String
   veggies   String?
   cheese    String
-  reference String
+  reference String      @unique
   status    OrderStatus @default(PROCESSING)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt

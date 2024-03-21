@@ -10,7 +10,7 @@ interface AdminOrder {
     name: string;
     email: string;
   };
-  status: "PROCESSING" | "SHIPPED";
+  status: "PROCESSING" | "READY";
   createdAt: Date;
   reference: string;
   pizzaId: number;
@@ -46,7 +46,9 @@ export function formatOrderData(orders: Order[] | null) {
       sauce: order.sauce,
       veggies: order.veggies,
       status: order.status,
-      createdAt: formatDateString(order.createdAt),
+      createdAt: formatDistanceToNow(new Date(order.createdAt), {
+        addSuffix: true,
+      }),
       reference: order.reference,
     };
   });

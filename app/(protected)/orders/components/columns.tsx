@@ -46,7 +46,7 @@ export const columns: ColumnDef<Order>[] = [
         case "PROCESSING":
           variant = "secondary";
           break;
-        case "SHIPPED":
+        case "READY":
           variant = "default";
           break;
       }

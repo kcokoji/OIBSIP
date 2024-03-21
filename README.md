@@ -1,4 +1,4 @@
-# Pizza Delivery Web Application
+# Pizza Ordering System
 
 Welcome to Pizzeria Web Application! 🍕
 

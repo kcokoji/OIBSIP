@@ -83,6 +83,7 @@ export default function CellActions(data: Inventory) {
             toast.error(data.error);
           }
           if (data?.success) {
+            setOpen(false);
             router.refresh();
             toast.info(data.success);
           }
@@ -199,20 +200,19 @@ export default function CellActions(data: Inventory) {
                   <span>Update</span>
                 )}
               </Button>
-              <DialogClose asChild>
-                <Button
-                  variant="destructive"
-                  size="lg"
-                  disabled={isPending}
-                  onClick={() => onDelete(data.id)}
-                >
-                  {isPending ? (
-                    <Loader size={24} color="white" />
-                  ) : (
-                    <span>Delete</span>
-                  )}
-                </Button>
-              </DialogClose>
+
+              <Button
+                variant="destructive"
+                size="lg"
+                disabled={isPending}
+                onClick={() => onDelete(data.id)}
+              >
+                {isPending ? (
+                  <Loader size={24} color="white" />
+                ) : (
+                  <span>Delete</span>
+                )}
+              </Button>
             </DialogFooter>
           </form>
         </Form>
