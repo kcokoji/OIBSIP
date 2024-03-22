@@ -19,7 +19,7 @@ interface ConfirmationEmailProps {
 
 export default function PaymentRequestEmail({ token }: ConfirmationEmailProps) {
   const domain = process.env.NEXT_PUBLIC_APP_URL;
-  const confirmLink = `${domain}/new-verification?token=${token}`;
+  const confirmLink = `${domain}/api/auth/verification?token=${token}`;
   return (
     <Html>
       <Head />

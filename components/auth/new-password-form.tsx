@@ -73,6 +73,7 @@ export const NewPasswordForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormError message={error} />
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -147,7 +148,6 @@ export const NewPasswordForm = () => {
               )}
             />
           </div>
-          <FormError message={error} />
 
           <Button disabled={isPending} type="submit" className="w-full">
             {isPending ? (
