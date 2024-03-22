@@ -65,8 +65,7 @@ export default function ProfileCard() {
     },
     mode: "onChange",
   });
-  const { formState } = form;
-  const { isDirty } = formState;
+
   const PasswordForm = useForm<z.infer<typeof ChangePasswordSchema>>({
     resolver: zodResolver(ChangePasswordSchema),
     defaultValues: {
@@ -75,8 +74,7 @@ export default function ProfileCard() {
     },
     mode: "onChange",
   });
-  const passwordFormState = PasswordForm.formState;
-  const passwordIsDirty = passwordFormState.isDirty;
+
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
     startTransition(() => {
       settings(values)
@@ -187,11 +185,7 @@ export default function ProfileCard() {
                   )}
                 />
 
-                <Button
-                  className="ml-auto"
-                  disabled={isPending || !isDirty}
-                  type="submit"
-                >
+                <Button className="ml-auto" disabled={isPending} type="submit">
                   {isPending ? (
                     <Loader size={24} color="white" />
                   ) : (
@@ -283,7 +277,7 @@ export default function ProfileCard() {
                 />
                 <Button
                   className="ml-auto"
-                  disabled={isPending || !passwordIsDirty}
+                  disabled={isPending}
                   variant="secondary"
                   type="submit"
                 >
