@@ -41,8 +41,8 @@ export default async function Navbar() {
           />
         </Link>
         {!user ? (
-          <Button size="lg" asChild>
-            <Link href="/login">Sign in</Link>
+          <Button asChild>
+            <Link href="/sign-up">Get started</Link>
           </Button>
         ) : (
           <UserButton {...user} />

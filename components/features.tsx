@@ -62,8 +62,9 @@ export default function Features() {
               </div>
               <h3 className="text-lg font-semibold">Admin controls</h3>
               <p className="text-sm text-center text-gray-500 dark:text-gray-400">
-                Switch to admin profile to access advanced controls. Manage
-                orders, view analytics, and update customer orders with ease.
+                Go to profile and switch to admin profile to access advanced
+                controls. Manage orders, view analytics, and update customer
+                orders with ease.
               </p>
             </div>
             <div className="flex flex-col items-center space-y-2">
