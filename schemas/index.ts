@@ -53,40 +53,12 @@ export const SubscribeSchema = z.object({
   }),
 });
 
-export const SettingsSchema = z
-  .object({
-    name: z.optional(z.string()),
-    role: z.enum([UserRole.ADMIN, UserRole.USER]),
-    email: z.optional(z.string().email()),
-    password: z.optional(z.string().min(6)),
-    newPassword: z.optional(z.string().min(6)),
-  })
-  .refine(
-    (data) => {
-      if (data.password && !data.newPassword) {
-        return false;
-      }
+export const SettingsSchema = z.object({
+  name: z.optional(z.string()),
+  role: z.enum([UserRole.ADMIN, UserRole.USER]),
+  email: z.optional(z.string().email()),
+});
 
-      return true;
-    },
-    {
-      message: "New password is required!",
-      path: ["newPassword"],
-    }
-  )
-  .refine(
-    (data) => {
-      if (data.newPassword && !data.password) {
-        return false;
-      }
-
-      return true;
-    },
-    {
-      message: "Password is required!",
-      path: ["password"],
-    }
-  );
 export const NewPasswordSchema = z
   .object({
     password: z
@@ -99,6 +71,14 @@ export const NewPasswordSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match!",
   });
+export const ChangePasswordSchema = z.object({
+  currentPassword: z
+    .string()
+    .min(6, { message: "Password must be more than six characters long!" }),
+  newPassword: z
+    .string()
+    .min(6, { message: "Password must be more than six characters long!" }),
+});
 
 export const SignUpSchema = z.object({
   name: z.string().min(1, {

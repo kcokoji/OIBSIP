@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Button } from "@/components/ui/button";
-import { SettingsSchema } from "@/schemas";
+import { ChangePasswordSchema, SettingsSchema } from "@/schemas";
 
 import {
   Select,
@@ -39,15 +39,17 @@ import { useSession } from "next-auth/react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
 import { UserRole } from "@prisma/client";
-import { settings } from "@/actions/settings";
+import { passwordSettings, settings } from "@/actions/settings";
 import Loader from "@/components/ui/loader";
 import { toast } from "sonner";
 
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import DeleteButton from "./delete-account-form";
+import { useRouter } from "next/navigation";
 
 export default function ProfileCard() {
   const user = useCurrentUser();
+  const router = useRouter();
 
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
@@ -57,14 +59,24 @@ export default function ProfileCard() {
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
-      password: undefined,
-      newPassword: undefined,
       name: user?.name || undefined,
       email: user?.email || undefined,
       role: user?.role || undefined,
     },
+    mode: "onChange",
   });
-
+  const { formState } = form;
+  const { isDirty } = formState;
+  const PasswordForm = useForm<z.infer<typeof ChangePasswordSchema>>({
+    resolver: zodResolver(ChangePasswordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+    },
+    mode: "onChange",
+  });
+  const passwordFormState = PasswordForm.formState;
+  const passwordIsDirty = passwordFormState.isDirty;
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
     startTransition(() => {
       settings(values)
@@ -72,11 +84,25 @@ export default function ProfileCard() {
           if (data.error) {
             form.reset();
             toast.error(data?.error);
-          }
-          form.reset();
-          if (data.success) {
+          } else {
             update();
-            form.reset();
+            router.refresh();
+            toast.info(data?.success);
+          }
+        })
+        .catch(() => toast.error("Oops! Something went wrong!"));
+    });
+  };
+  const onSubmitPassword = (values: z.infer<typeof ChangePasswordSchema>) => {
+    startTransition(() => {
+      passwordSettings(values)
+        .then((data) => {
+          if (data.error) {
+            PasswordForm.reset();
+            toast.error(data?.error);
+          } else {
+            update();
+            PasswordForm.reset();
             toast.info(data?.success);
           }
         })
@@ -98,6 +124,7 @@ export default function ProfileCard() {
                 className="space-y-6"
                 onSubmit={form.handleSubmit(onSubmit)}
               >
+                <CardTitle>Personal Information</CardTitle>
                 <FormField
                   control={form.control}
                   name="name"
@@ -133,12 +160,58 @@ export default function ProfileCard() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
-                  name="password"
+                  name="role"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> Password</FormLabel>
+                      <FormLabel>Role</FormLabel>
+                      <Select
+                        disabled={isPending}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
+                          <SelectItem value={UserRole.USER}>User</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  className="ml-auto"
+                  disabled={isPending || !isDirty}
+                  type="submit"
+                >
+                  {isPending ? (
+                    <Loader size={24} color="white" />
+                  ) : (
+                    <p>Save Changes</p>
+                  )}
+                </Button>
+              </form>
+            </Form>
+            <Form {...PasswordForm}>
+              <form
+                className="space-y-6"
+                onSubmit={PasswordForm.handleSubmit(onSubmitPassword)}
+              >
+                <CardTitle>Password</CardTitle>
+                <FormField
+                  control={PasswordForm.control}
+                  name="currentPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Current Password</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
@@ -172,7 +245,7 @@ export default function ProfileCard() {
                 />
 
                 <FormField
-                  control={form.control}
+                  control={PasswordForm.control}
                   name="newPassword"
                   render={({ field }) => (
                     <FormItem>
@@ -208,48 +281,23 @@ export default function ProfileCard() {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="role"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Role</FormLabel>
-                      <Select
-                        disabled={isPending}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
-                          <SelectItem value={UserRole.USER}>User</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
+                <Button
+                  className="ml-auto"
+                  disabled={isPending || !passwordIsDirty}
+                  variant="secondary"
+                  type="submit"
+                >
+                  {isPending ? (
+                    <Loader size={24} color="white" />
+                  ) : (
+                    <p>Change password</p>
                   )}
-                />
-
-                <CardFooter className="flex space-x-2 ">
-                  <Button
-                    className="ml-auto"
-                    disabled={isPending}
-                    type="submit"
-                  >
-                    {isPending ? (
-                      <Loader size={24} color="white" />
-                    ) : (
-                      <p>Save Changes</p>
-                    )}
-                  </Button>
-                </CardFooter>
+                </Button>
               </form>
             </Form>
-            <DeleteButton id={user?.id} />
+            <CardFooter className="flex justify-end">
+              <DeleteButton id={user?.id} />
+            </CardFooter>
           </CardContent>
         </Card>
       </div>
