@@ -120,7 +120,7 @@ export default function PizzaCard({
 
   const onSubmit = (values: z.infer<typeof OrderSchema>) => {
     if (!email || !name) {
-      toast.error("Something went wrong");
+      toast.error("Oops An unexpected error occured!");
       return;
     }
     setOpen(false);
