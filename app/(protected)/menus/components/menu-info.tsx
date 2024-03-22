@@ -2,12 +2,14 @@ import { PizzaInfo, getInventory } from "@/data/pizza-info";
 
 import PizzaCard from "./pizza-card";
 import Header from "@/components/header";
+import { currentUser } from "@/lib/auth";
 
 export default async function MenuInfo() {
   const bases = await getInventory("BASE");
   const sauces = await getInventory("SAUCE");
   const cheeses = await getInventory("CHEESE");
   const veggies = await getInventory("VEGGIES");
+  const user = await currentUser();
 
   return (
     <div className="bg-[#f2eddc] py-8 ">
@@ -21,6 +23,7 @@ export default async function MenuInfo() {
             sauces={sauces}
             cheeses={cheeses}
             veggies={veggies}
+            user={user}
           />
         ))}
       </div>

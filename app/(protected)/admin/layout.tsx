@@ -27,7 +27,6 @@ export default async function AdminLayout({
   return (
     <>
       <div className="grid bg-[#f2eddc] h-screen w-full overflow-hidden lg:grid-cols-[280px_1fr]">
-        {/* //@ts-ignore */}
         <SideBar user={user} count={count} />
 
         <section className=" overflow-y-auto">

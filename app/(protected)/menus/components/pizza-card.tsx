@@ -50,6 +50,7 @@ import { ChevronDownIcon } from "lucide-react";
 import pizzaImage from "@/public/img/pizza.png";
 import { Inventory } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { User } from "next-auth";
 
 interface PizzaProps {
   bases: Inventory[] | null;
@@ -62,6 +63,7 @@ interface PizzaProps {
     description: string;
     basePrice: number;
   };
+  user: User | undefined;
 }
 
 export default function PizzaCard({
@@ -70,6 +72,7 @@ export default function PizzaCard({
   sauces,
   cheeses,
   veggies,
+  user,
 }: PizzaProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -77,7 +80,7 @@ export default function PizzaCard({
   const formattedPrice = convertPrice(pizza.basePrice);
 
   const [isPending, startTransition] = useTransition();
-  const user = useCurrentUser();
+
   const email = user?.email;
   const name = user?.name;
 
@@ -116,6 +119,10 @@ export default function PizzaCard({
   const handleFlutterPayment = useFlutterwave(config);
 
   const onSubmit = (values: z.infer<typeof OrderSchema>) => {
+    if (!email || !name) {
+      toast.error("Something went wrong");
+      return;
+    }
     setOpen(false);
     handleFlutterPayment({
       callback: (response) => {
